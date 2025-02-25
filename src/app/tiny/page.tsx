@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import { tinyMCEFonts } from "@/utils/fonts";
 import { imageUploadHandler } from "@/utils/imageUploadHandler";
+import { fetchThumbnail } from "@/utils/fetchThumnail";
 
 const Editor = dynamic(() => import("@tinymce/tinymce-react").then((mod) => mod.Editor), { ssr: false });
 
@@ -51,11 +52,28 @@ export default function TinyEditorPage() {
             "| link image media |bullist numlist outdent indent | removeformat ",
           ...tinyMCEFonts,
 
-          images_upload_url: "/api/upload",
-          file_picker_types: "image",
-          automatic_uploads: true,
-          images_upload_handler: imageUploadHandler,
-          content_style: "body { font-family: Noto Sans KR, sans-serif; font-size: 20px; }",
+          setup: function (editor) {
+            editor.on("change", async function () {
+              const content = editor.getContent();
+              console.log("🔍 현재 TinyMCE 내용:", content); // ✅ TinyMCE의 현재 내용 확인
+
+              const match = content.match(/(https?:\/\/[^\s]+)/); // ✅ URL 추출
+              if (match) {
+                const url = match[0];
+                console.log("🔍 감지된 링크:", url); // ✅ 감지된 링크 확인
+
+                const thumbnail = await fetchThumbnail(url);
+                console.log("🔍 가져온 썸네일:", thumbnail); // ✅ fetchThumbnail 결과 확인
+
+                if (thumbnail) {
+                  console.log("✅ 썸네일 추가 중...");
+                  editor.setContent(content + `<img src="${thumbnail}" style="max-width:100%;"/>`);
+                } else {
+                  console.warn("⚠️ 썸네일을 찾을 수 없음");
+                }
+              }
+            });
+          },
         }}
         onEditorChange={(newContent) => setContent(newContent)}
       />
