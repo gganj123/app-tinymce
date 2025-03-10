@@ -1,0 +1,39 @@
+.cms-table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.cms-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.cms-table th,
+.cms-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+  text-align: center;
+}
+.cms-table td {
+  font-size: 13px;
+}
+
+.cms-table th {
+  background-color: #464667;
+  color: white;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.cms-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.no-data {
+  text-align: center;
+  padding: 15px;
+  font-size: 14px;
+  color: #888;
+}

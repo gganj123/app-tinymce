@@ -10,12 +10,14 @@ export const tinyMCEFonts = {
     "Tahoma=Tahoma,arial,helvetica,sans-serif; " +
     "Verdana=Verdana,geneva,sans-serif;",
 
+  fontsize_formats: "8pt 10pt 12pt 14pt 16pt 18pt 20pt 22pt 24pt 26pt 28pt 30pt 32pt 36pt 40pt 48pt 56pt 64pt 72pt",
+
   content_style: `
       @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap');
       @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap');
       body {
         font-family: 'Noto Sans KR', 'Nanum Gothic', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
-        font-size: 14px;
+        font-size: 20px;
       }
     `,
 };

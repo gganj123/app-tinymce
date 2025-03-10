@@ -2,9 +2,9 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
-import { tinyMCEFonts } from "@/utils/fonts";
-import { imageUploadHandler } from "@/utils/imageUploadHandler";
-import { fetchThumbnail } from "@/utils/fetchThumnail";
+import { tinyMCEFonts } from "@/utils/editor/fonts";
+import { imageUploadHandler } from "@/utils/editor/imageUploadHandler";
+import { fetchThumbnail } from "@/utils/editor/fetchThumnail";
 
 const Editor = dynamic(() => import("@tinymce/tinymce-react").then((mod) => mod.Editor), { ssr: false });
 
@@ -48,25 +48,24 @@ export default function TinyEditorPage() {
           ],
           toolbar:
             "undo redo | " +
-            "fontfamily bold italic underline | forecolor backcolor | alignleft aligncenter alignright alignjustify | " +
+            "fontfamily bold italic underline fontsize | forecolor backcolor | alignleft aligncenter alignright alignjustify | " +
             "| link image media |bullist numlist outdent indent | removeformat ",
           ...tinyMCEFonts,
-
           setup: function (editor) {
             editor.on("change", async function () {
               const content = editor.getContent();
-              console.log("🔍 현재 TinyMCE 내용:", content); // ✅ TinyMCE의 현재 내용 확인
+              console.log(" 현재 TinyMCE 내용:", content);
 
-              const match = content.match(/(https?:\/\/[^\s]+)/); // ✅ URL 추출
+              const match = content.match(/(https?:\/\/[^\s]+)/);
               if (match) {
                 const url = match[0];
-                console.log("🔍 감지된 링크:", url); // ✅ 감지된 링크 확인
+                console.log(" 감지된 링크:", url);
 
                 const thumbnail = await fetchThumbnail(url);
-                console.log("🔍 가져온 썸네일:", thumbnail); // ✅ fetchThumbnail 결과 확인
+                console.log(" 가져온 썸네일:", thumbnail);
 
                 if (thumbnail) {
-                  console.log("✅ 썸네일 추가 중...");
+                  console.log(" 썸네일 추가 중...");
                   editor.setContent(content + `<img src="${thumbnail}" style="max-width:100%;"/>`);
                 } else {
                   console.warn("⚠️ 썸네일을 찾을 수 없음");
